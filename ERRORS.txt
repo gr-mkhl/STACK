@@ -1,0 +1,22 @@
+ERROR:in file "stack.cpp" function "StackPop()" line 46
+
+-> Stack underflow
+
+__stack[0x0000004FE17FFB40]__ created at main.cpp:main():19
+{
+	capacity = 10
+	size = 0
+	data[0x0000004FE17FFB58]
+	{
+		(-)[0] = nan (POISON_VALUE)
+		(-)[1] = nan (POISON_VALUE)
+		(-)[2] = nan (POISON_VALUE)
+		(-)[3] = nan (POISON_VALUE)
+		(-)[4] = nan (POISON_VALUE)
+		(-)[5] = nan (POISON_VALUE)
+		(-)[6] = nan (POISON_VALUE)
+		(-)[7] = nan (POISON_VALUE)
+		(-)[8] = nan (POISON_VALUE)
+		(-)[9] = nan (POISON_VALUE)
+	}
+}

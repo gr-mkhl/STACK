@@ -9,7 +9,7 @@ void fopen_bracket( size_t* tabs, FILE* stream )
 void fclose_bracket( size_t* tabs, FILE* stream )
 {
     (*tabs)--;
-    FPRINTFWITHTABS(*tabs, stream, "{\n")
+    FPRINTFWITHTABS(*tabs, stream, "}\n")
 }
 
 void FprintNTabs( FILE* stream, size_t tabs )

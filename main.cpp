@@ -14,18 +14,16 @@ int main()
         switch (ch)
         {
             case '1':
-                scanf("%zd", &size);
-                STACKINIT(&stk, size);
-                StackPrint(&stk, stdout);
+                scanf("%zu", &stk.capacity);
+                STACKINIT(&stk, stk.capacity);
                 break;
             case '2':
                 scanf(OUTPUT_SPECIFIER, &value);
                 StackPush(&stk, value);
-                StackPrint(&stk, stdout);
                 break;
             case '3':
-                printf(OUTPUT_SPECIFIER "\n", StackPop(&stk));
-                StackPrint(&stk, stdout);
+                StackPop(&stk, &value);
+                printf(OUTPUT_SPECIFIER "\n", value);
                 break;
             case '4':
                 StackPrint(&stk, stdout);
@@ -35,6 +33,8 @@ int main()
             default:
                 printf(RED "Invalid input\n" RETURN_COL);
                 break;
+
+            STACK_OK(&stk, IS_OK)
         }
         printf(MENU);
         CleanBuffer();

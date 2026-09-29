@@ -32,6 +32,33 @@ typedef double stack_el_t;
             "q - exit program\n"                  \
             RETURN_COL
 
+#define STACK_OK(STK_POINTER, FUNC) do                                                                                  \
+                                    {                                                                                   \
+                                        enum ERRORS is_error = StackVerifier(STK_POINTER, FUNC);                        \
+                                        if (is_error != ALL_CORRECT)                                                    \
+                                        {                                                                               \
+                                            StackDump(STK_POINTER, is_error ON_DEBUG(, __FILE__, __func__, __LINE__));  \
+                                            return is_error;                                                            \
+                                        }                                                                               \
+                                    } while(0);
+
+enum ERRORS {ALL_CORRECT = 0,
+             UNINIT_STACK = -1,
+             STACK_OOM = -2,
+             CAPACITY_ERROR = -3,
+             SIZE_ERROR = -4,
+             STACK_OVERFLOW = -5,
+             STACK_UNDERFLOW = -6,
+             ALREADY_INIT_STACK = -7,
+             ALREADY_DESTROYED_STACK = -8,
+             FATAL_ERROR_NO_STACK = -9};
+
+enum FUNC {INIT = 1,
+           PUSH = 2,
+           POP = 3,
+           DESTROY = 4,
+           IS_OK = 0};
+
 
 struct stack_t
 {
@@ -44,21 +71,16 @@ struct stack_t
     size_t capacity;
 };
 #define STACKINIT(PTR, SIZE) StackInit(PTR, SIZE ON_DEBUG(, __FILE__, __func__, __LINE__))
-int StackInit( stack_t* stk, size_t capacity
+enum ERRORS StackInit( stack_t* stk, size_t capacity
                ON_DEBUG(, const char* file, const char* func, int line));
-
-int StackPrint( stack_t* stk, FILE* stream );
-int StackPush( stack_t* stk, stack_el_t value );
-stack_el_t StackPop( stack_t* stk );
-int StackDestroy( stack_t* stk );
-
+void StackDump( const stack_t* stk, enum ERRORS error
+                ON_DEBUG(, const char* file, const char* func, int line));
+enum ERRORS StackPrint( const stack_t* stk, FILE* stream );
+enum ERRORS StackPush( stack_t* stk, stack_el_t value );
+enum ERRORS StackPop( stack_t* stk, stack_el_t* value );
+enum ERRORS StackDestroy( stack_t* stk );
+enum ERRORS StackVerifier( const stack_t* stk, enum FUNC func );
 #endif
-/*
-enum ERRORS = {UNINIT_STACK = -1, ALREADY_INIT_STACK = -2};
-enum FUNCTIONS = {INIT = 1, PUSH = 2, POP = 3, DESTROY = 4};
 
 
-enum ERRORS StackVerifier( stack_t* stk, enum FUNC func );
 
-
-*/
