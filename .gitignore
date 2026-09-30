@@ -1,4 +1,5 @@
 *.gitattributes
 *.exe
+*.txt
 *.o
 *.save

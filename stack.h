@@ -6,16 +6,28 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
-typedef double stack_el_t;
-#define OUTPUT_SPECIFIER "%lg"
+typedef int stack_el_t;
+#define OUTPUT_SPECIFIER "%d"
+#define POISON -67
+#define ERROR_FILE_NAME "STACK_ERRORS.txt"
+#define BLACK       "\033[30m"
+#define RED         "\033[31m"
+#define GREEN       "\033[32m"
+#define YELLOW      "\033[33m"
+#define BLUE        "\033[34m"
+#define PURPLE      "\033[35m"
+#define LIGHT_BLUE  "\033[36m"
+#define WHITE       "\033[37m"
+#define RETURN_COL  "\033[0m"
 
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define BLUE "\033[34m"
-#define RETURN_COL "\033[0m"
 
-#define POISON NAN
+const unsigned long long LEFT_STACK_CANARY_CORRECT_VALUE = 0xAB0BA;
+const unsigned long long RIGHT_STACK_CANARY_CORRECT_VALUE = 0xBA0BAB;
+
+const stack_el_t LEFT_BUFFER_CANARY_CORRECT_VALUE= 0xEDA;
+const stack_el_t RIGHT_BUFFER_CANARY_CORRECT_VALUE= 0xDED;
 
 #ifdef STACK_DEBUG
 #define ON_DEBUG(...) __VA_ARGS__
@@ -32,54 +44,52 @@ typedef double stack_el_t;
             "q - exit program\n"                  \
             RETURN_COL
 
-#define STACK_OK(STK_POINTER, FUNC) do                                                                                  \
-                                    {                                                                                   \
-                                        enum ERRORS is_error = StackVerifier(STK_POINTER, FUNC);                        \
-                                        if (is_error != ALL_CORRECT)                                                    \
-                                        {                                                                               \
-                                            StackDump(STK_POINTER, is_error ON_DEBUG(, __FILE__, __func__, __LINE__));  \
-                                            return is_error;                                                            \
-                                        }                                                                               \
-                                    } while(0);
 
-enum ERRORS {ALL_CORRECT = 0,
-             UNINIT_STACK = -1,
-             STACK_OOM = -2,
-             CAPACITY_ERROR = -3,
-             SIZE_ERROR = -4,
-             STACK_OVERFLOW = -5,
-             STACK_UNDERFLOW = -6,
-             ALREADY_INIT_STACK = -7,
-             ALREADY_DESTROYED_STACK = -8,
-             FATAL_ERROR_NO_STACK = -9};
-
-enum FUNC {INIT = 1,
-           PUSH = 2,
-           POP = 3,
-           DESTROY = 4,
-           IS_OK = 0};
-
+enum error_id {ALL_CORRECT = 0,
+               UNINIT_STACK = -1,
+               STACK_OOM = -2,
+               CAPACITY_ERROR = -3,
+               SIZE_ERROR = -4,
+               ALREADY_INIT_STACK = -5,
+               ALREADY_DESTROYED_STACK = -6,
+               FATAL_ERROR_NO_STACK = -7,
+               DIED_CANARY = -8,
+               STACK_UNDERFLOW = -9};
 
 struct stack_t
 {
-    ON_DEBUG(const char* file;
-             const char* func;
-             int line;)
-
+    unsigned long long left_stack_canary;
+    stack_el_t* alloc_ptr;
     stack_el_t* data;
+
     size_t size;
     size_t capacity;
+
+
+    ON_DEBUG(const char* file;
+             const char* func;
+             int line;
+             enum error_id status;)
+
+    unsigned long long right_stack_canary;
 };
 #define STACKINIT(PTR, SIZE) StackInit(PTR, SIZE ON_DEBUG(, __FILE__, __func__, __LINE__))
-enum ERRORS StackInit( stack_t* stk, size_t capacity
+enum error_id StackInit( stack_t* stk, size_t capacity
                ON_DEBUG(, const char* file, const char* func, int line));
-void StackDump( const stack_t* stk, enum ERRORS error
+enum error_id StackPrint( const stack_t* stk, FILE* stream );
+enum error_id StackPush( stack_t* stk, stack_el_t value );
+enum error_id StackPop( stack_t* stk, stack_el_t* value );
+enum error_id StackDestroy( stack_t* stk );
+
+enum error_id StackOk( stack_t* stk );
+
+void StackDump( const stack_t* stk, enum error_id error
                 ON_DEBUG(, const char* file, const char* func, int line));
-enum ERRORS StackPrint( const stack_t* stk, FILE* stream );
-enum ERRORS StackPush( stack_t* stk, stack_el_t value );
-enum ERRORS StackPop( stack_t* stk, stack_el_t* value );
-enum ERRORS StackDestroy( stack_t* stk );
-enum ERRORS StackVerifier( const stack_t* stk, enum FUNC func );
+
+enum error_id StackVerifier( const stack_t* stk );
+
+int AreNotCanariesAlive( const stack_t* stk );
+
 #endif
 
 

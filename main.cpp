@@ -6,6 +6,7 @@ int main()
     stack_t stk = {};
     stack_el_t value = 0;
     size_t size = 0;
+
     int ch = 0;
 
     printf(MENU);
@@ -14,8 +15,8 @@ int main()
         switch (ch)
         {
             case '1':
-                scanf("%zu", &stk.capacity);
-                STACKINIT(&stk, stk.capacity);
+                scanf(OUTPUT_SPECIFIER, &value);
+                STACKINIT(&stk, value);
                 break;
             case '2':
                 scanf(OUTPUT_SPECIFIER, &value);
@@ -26,15 +27,12 @@ int main()
                 printf(OUTPUT_SPECIFIER "\n", value);
                 break;
             case '4':
-                StackPrint(&stk, stdout);
-                break;
-            case 'q':
+                if (StackOk(&stk) != FATAL_ERROR_NO_STACK)
+                    StackPrint(&stk, stdout);
                 break;
             default:
                 printf(RED "Invalid input\n" RETURN_COL);
                 break;
-
-            STACK_OK(&stk, IS_OK)
         }
         printf(MENU);
         CleanBuffer();
