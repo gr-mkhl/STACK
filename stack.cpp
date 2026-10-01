@@ -1,5 +1,6 @@
 #include "stack.h"
 
+
 enum error_id StackInitF( stack_t* stk, size_t init_capacity
                 ON_DEBUG(, const char* file, const char* func, int line))
 {

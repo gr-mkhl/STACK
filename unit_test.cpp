@@ -1,5 +1,6 @@
 #include "stack.h"
 
+
 void ALL_CORRECT_Stack()
 {
     printf(YELLOW "ALL_CORRECT_Stack\n" RET_COL);

@@ -105,6 +105,7 @@ void fopen_bracket( size_t* tabs, FILE* stream );
 void fclose_bracket( size_t* tabs, FILE* stream );
 void FprintNTabs( FILE* stream, size_t tabs );
 
+
 void StackUnitTest();
 
 void ALL_CORRECT_Stack();

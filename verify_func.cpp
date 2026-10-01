@@ -7,7 +7,6 @@
 //   you need to check it before calling it
 //
 //   ATTENTION!!!
-
 enum error_id StackPrint( const stack_t* stk, FILE* stream )
 {
     assert(stream);
