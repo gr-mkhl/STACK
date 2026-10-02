@@ -48,10 +48,10 @@ enum error_id {ALL_CORRECT = 0,
                CAPACITY_ERROR = -3,
                SIZE_ERROR = -4,
                ALREADY_INIT = -5,
-//             ALREADY_DESTROYED = -6,
-               FATAL_ERROR_NO_STACK = -7,
-               DIED_CANARY = -8,
-               STACK_UNDERFLOW = -9};
+               FATAL_ERROR_NO_STACK = -6,
+               DEAD_CANARY = -7,
+               STACK_UNDERFLOW = -8,
+               BAD_HASH = -9};
 
 struct stack_t
 {
@@ -68,6 +68,8 @@ struct stack_t
              int line;
              enum error_id status;)
 
+    uint64_t hash_stack_value;
+    uint64_t hash_buffer_value;
     unsigned long long right_stack_canary;
 };
 
@@ -98,7 +100,8 @@ void StackDump( stack_t* stk, enum error_id error
       ON_DEBUG(, const char* file, const char* func, int line ));
 
 enum error_id StackVerifier( stack_t* stk );
-
+uint64_t Hash_Stack_djb2( stack_t* stk );
+uint64_t Hash_Buffer_djb2( stack_t* stk );
 int AreNotCanariesAlive( const stack_t* stk );
 
 void fopen_bracket( size_t* tabs, FILE* stream );
@@ -116,6 +119,7 @@ void SIZE_ERROR_Stack();
 void OOM_Stack();
 void UNDERFLOW_Stack();
 void DEAD_CANARY_Stack();
+void BAD_HASH_Stack();
 
 #endif
 

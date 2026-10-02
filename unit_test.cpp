@@ -23,7 +23,6 @@ void SIZE_ERROR_Stack()
 
     printf("init:    %d\n", StackInit(&stk, 7));
     stk.size = -7;
-    //StackPrint(&stk, stdout);
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
     printf("destroy: %d\n", StackDestroy(&stk));
@@ -38,7 +37,6 @@ void CAPACITY_ERROR_Stack()
 
     printf("init:    %d\n", StackInit(&stk, 7));
     stk.capacity = -7;
-
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
     printf("destroy: %d\n", StackDestroy(&stk));
@@ -109,6 +107,25 @@ void DEAD_CANARY_Stack()
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
     printf("push:    %d\n", StackPush(&stk, 4));
+    stk.alloc_ptr[0] = 232443;
+    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("destroy: %d\n", StackDestroy(&stk));
+}
+
+void BAD_HASH_Stack()
+{
+    printf(YELLOW "BAD_HASH_Stack\n" RET_COL);
+
+    stack_t stk = {};
+    stack_el_t value = 0;
+
+    printf("init:    %d\n", StackInit(&stk, 7));
+    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("push:    %d\n", StackPush(&stk, 4));
+    stk.hash_stack_value++;
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
     printf("push:    %d\n", StackPush(&stk, 4));
@@ -131,6 +148,8 @@ void StackUnitTest()
     OOM_Stack();
 
     UNDERFLOW_Stack();
+
+    BAD_HASH_Stack();
 
     DEAD_CANARY_Stack();
 

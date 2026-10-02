@@ -56,16 +56,19 @@ enum error_id StackInitF( stack_t* stk, size_t init_capacity
     stk->left_stack_canary  =  LEFT_STACK_CANARY_CORRECT_VALUE;
     stk->right_stack_canary = RIGHT_STACK_CANARY_CORRECT_VALUE;
 
-    return ON_DEBUG(stk->status = )ALL_CORRECT;
+    ON_DEBUG(stk->status = ALL_CORRECT;)
+    stk->hash_stack_value = Hash_Stack_djb2(stk);
+    stk->hash_buffer_value = Hash_Buffer_djb2(stk);
+
+    return ALL_CORRECT;
 }
 
 enum error_id StackPush( stack_t* stk, stack_el_t value )
 {
     enum error_id is_error = StackAssert(stk);
     if (is_error != ALL_CORRECT)
-    {
         return is_error;
-    }
+
     if (stk->size == stk->capacity)
     {
         size_t new_capacity = stk->capacity != 0 ? stk->capacity * 2 : 1; //for stk->capacity == 0
@@ -90,8 +93,10 @@ enum error_id StackPush( stack_t* stk, stack_el_t value )
     }
 
     stk->data[stk->size++] = value;
-
-    return ON_DEBUG(stk->status = )ALL_CORRECT;
+    ON_DEBUG(stk->status = ALL_CORRECT;)
+    stk->hash_stack_value = Hash_Stack_djb2(stk);
+    stk->hash_buffer_value = Hash_Buffer_djb2(stk);
+    return ALL_CORRECT;
 }
 
 enum error_id StackPop( stack_t* stk, stack_el_t* value )
@@ -130,8 +135,11 @@ enum error_id StackPop( stack_t* stk, stack_el_t* value )
 
     *value = stk->data[--stk->size];
     stk->data[stk->size] = POISON;
+    ON_DEBUG(stk->status = ALL_CORRECT;)
+    stk->hash_stack_value = Hash_Stack_djb2(stk);
+    stk->hash_buffer_value = Hash_Buffer_djb2(stk);
 
-    return ON_DEBUG(stk->status = )ALL_CORRECT;
+    return ALL_CORRECT;
 }
 
 enum error_id StackDestroy( stack_t* stk )
@@ -163,15 +171,16 @@ enum error_id StackDestroy( stack_t* stk )
         stk->alloc_ptr[i] = POISON;
     }
 
-    stk->capacity = 0;
-    stk->size = 0;
+    stk->capacity = POISON;
+    stk->size = POISON;
     stk->left_stack_canary  = POISON;
     stk->right_stack_canary = POISON;
-
+    stk->hash_stack_value   = POISON;
+    stk->hash_buffer_value =  POISON;
     free(stk->alloc_ptr);
     stk->data = NULL;
     stk->alloc_ptr = NULL;
 
-    return ON_DEBUG(stk->status = )ALL_CORRECT;
+    return ALL_CORRECT;
 }
 

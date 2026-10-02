@@ -7,6 +7,7 @@
 //   you need to check it before calling it
 //
 //   ATTENTION!!!
+
 enum error_id StackPrint( const stack_t* stk, FILE* stream )
 {
     assert(stream);
@@ -22,6 +23,7 @@ enum error_id StackPrint( const stack_t* stk, FILE* stream )
                              stk->left_stack_canary == LEFT_STACK_CANARY_CORRECT_VALUE ? "true" : "false"))
     FPRINTFWITHTABS(tabs, stream, "capacity = %zd\n", stk->capacity)
     FPRINTFWITHTABS(tabs, stream, "size = %zd\n", stk->size)
+    ON_DEBUG(FPRINTFWITHTABS(tabs, stream, "alloc_ptr[0x%p]\n", &stk->alloc_ptr))
     FPRINTFWITHTABS(tabs, stream, "data[0x%p]\n", &stk->data)
     fopen_bracket(&tabs, stream);
     ON_DEBUG
@@ -53,20 +55,42 @@ enum error_id StackPrint( const stack_t* stk, FILE* stream )
     ON_DEBUG(FPRINTFWITHTABS(tabs, stream, "canary = 0x%llX (correct value = 0x%llX <%s>)\n",
                              stk->right_stack_canary, RIGHT_STACK_CANARY_CORRECT_VALUE,
                              stk->right_stack_canary == RIGHT_STACK_CANARY_CORRECT_VALUE ? "true" : "false"))
+    ON_DEBUG(FPRINTFWITHTABS(tabs, stream, "stack_hash = %llu\n", stk->hash_stack_value))
+    ON_DEBUG(FPRINTFWITHTABS(tabs, stream, "buffer_hash = %llu\n", stk->hash_buffer_value))
+
     fclose_bracket(&tabs, stream);
 
     return ALL_CORRECT;
 }
+// used hash algorithm djb2: https://dev.to/doogal/djb2-hash-function-string-to-integer-algorithm-explained-4bii?ysclid=mur1ep12vp401464212
+uint64_t Hash_Stack_djb2( stack_t* stk )
+{
+    uint64_t hash = 5381;
 
+    void* hash_ptr_dont_touch = &(stk->hash_stack_value);
 
+    for (uint8_t* i = (uint8_t*)stk; i < hash_ptr_dont_touch; i++)
+        hash =  (hash << 5) + hash + *i;
+    return hash;
+}
+
+uint64_t Hash_Buffer_djb2( stack_t* stk )
+{
+    uint64_t hash = 5381;
+
+    void* hash_ptr_dont_touch = &(stk->alloc_ptr[stk->capacity + 1]); //right stack canary address
+
+    for (uint8_t* i = (uint8_t*)stk->data; i < hash_ptr_dont_touch; i++)
+        hash =  (hash << 5) + hash + *i;
+    return hash;
+}
 
 enum error_id StackAssertF( stack_t* stk
               ON_DEBUG(, const char* file, const char* func, int line))
 {
     if (stk == NULL)
     {
-        StackDump(stk, FATAL_ERROR_NO_STACK
-                  ON_DEBUG(, file, func, line));
+        ON_DEBUG(StackDump(stk, FATAL_ERROR_NO_STACK, file, func, line));
         return FATAL_ERROR_NO_STACK;
     }
     ON_DEBUG(
@@ -93,64 +117,54 @@ void StackDump( stack_t* stk, enum error_id error
     FILE* error_file = fopen(ERROR_FILE_NAME, "a");
     if (error_file == NULL)
         return;
-    if (error == FATAL_ERROR_NO_STACK)
+
+    fprintf(error_file, "ERROR %d: " ON_DEBUG("in file \"%s\" function \"%s()\" line %d") "\n\n", error ON_DEBUG(, file, func, line));
+    switch (error)
     {
-        fprintf(error_file, "FATAL_ERROR:" ON_DEBUG("in file \"%s\" function \"%s()\" line %d") "\n\n" ON_DEBUG(, file, func, line));
-        fprintf(error_file, "-> NULL-pointer was received instead of pointer to the stack\n");
-        fclose(error_file);
-        abort();
-    }
-    else if (error == DIED_CANARY)
-    {
-        fprintf(error_file, "FATAL_ERROR:" ON_DEBUG("in file \"%s\" function \"%s()\" line %d") "\n\n" ON_DEBUG(, file, func, line));
-        fprintf(error_file, "-> Canary died. Press F to pay respect\n\n");
-        StackPrint(stk, error_file);
-        fclose(error_file);
-        abort();
-    }
-    else
-    {
-        fprintf(error_file, "ERROR %d: " ON_DEBUG("in file \"%s\" function \"%s()\" line %d") "\n\n", error ON_DEBUG(, file, func, line));
-        switch (error)
-        {
-            case SIZE_ERROR:
-                fprintf(error_file, "-> Stack size error\n\n");
-                StackPrint(stk, error_file);
-                break;
-            case CAPACITY_ERROR:
-                fprintf(error_file, "-> Stack capacity error\n\n");
-                StackPrint(stk, error_file);
-                break;
-            case STACK_OOM:
-                fprintf(error_file, "-> Stack allocation error\n\n");
-                StackPrint(stk, error_file);
-                break;
-            case UNINIT_STACK:
-                fprintf(error_file, "-> Stack is not initialized\n\n");
-                StackPrint(stk, error_file);
-                break;
-            case ALREADY_INIT:
-                fprintf(error_file, "-> Stack is already initialized\n\n");
-                StackPrint(stk, error_file);
-                ON_DEBUG(stk->status = ALL_CORRECT;)
-                break;
-/*
-            case ALREADY_DESTROYED:
-                fprintf(error_file, "-> Stack is already destroyed\n\n");
-                StackPrint(stk, error_file);
-                break;
-*/
-            case STACK_UNDERFLOW:
-                fprintf(error_file, "-> Stack underflow\n\n");
-                StackPrint(stk, error_file);
-                ON_DEBUG(stk->status = ALL_CORRECT;)
-                break;
-            default:
-                fprintf(error_file, "-> UNDEFINED ERROR?!\n\n"
-                                    "ERROR CODE:%d\n\n", error);
-                StackPrint(stk, error_file);
-                break;
-        }
+        case FATAL_ERROR_NO_STACK:
+            fprintf(error_file, "-> NULL-pointer was received instead of pointer to the stack\n");
+            fclose(error_file);
+            abort();
+            break;
+        case DEAD_CANARY:
+            fprintf(error_file, "-> Canary is dead. Press F to pay respect\n\n");
+            StackPrint(stk, error_file);
+            break;
+        case SIZE_ERROR:
+            fprintf(error_file, "-> Stack size error\n\n");
+            StackPrint(stk, error_file);
+            break;
+        case CAPACITY_ERROR:
+            fprintf(error_file, "-> Stack capacity error\n\n");
+            StackPrint(stk, error_file);
+            break;
+        case STACK_OOM:
+            fprintf(error_file, "-> Stack allocation error\n\n");
+            StackPrint(stk, error_file);
+            break;
+        case UNINIT_STACK:
+            fprintf(error_file, "-> Stack is not initialized\n\n");
+            StackPrint(stk, error_file);
+            break;
+        case ALREADY_INIT:
+            fprintf(error_file, "-> Stack is already initialized\n\n");
+            StackPrint(stk, error_file);
+            ON_DEBUG(stk->status = ALL_CORRECT;)
+            break;
+        case BAD_HASH:
+            fprintf(error_file, "-> Hash destroyed\n\n");
+            StackPrint(stk, error_file);
+            break;
+        case STACK_UNDERFLOW:
+            fprintf(error_file, "-> Stack underflow\n\n");
+            StackPrint(stk, error_file);
+            ON_DEBUG(stk->status = ALL_CORRECT;)
+            break;
+        default:
+            fprintf(error_file, "-> UNDEFINED ERROR?!\n\n"
+                                "ERROR CODE:%d\n\n", error);
+            StackPrint(stk, error_file);
+            break;
     }
     fclose(error_file);
 
@@ -173,7 +187,11 @@ enum error_id StackVerifier( stack_t* stk )
         return ON_DEBUG(stk->status = )SIZE_ERROR;               //size_t  is unsigned and always > 0,
                                                                  //so we need to check "infinite" value
     if (AreNotCanariesAlive(stk))
-        return ON_DEBUG(stk->status = )DIED_CANARY;
+        return ON_DEBUG(stk->status = )DEAD_CANARY;
+
+    if (Hash_Stack_djb2(stk) != stk->hash_stack_value ||
+        Hash_Buffer_djb2(stk) != stk->hash_buffer_value)
+        return ON_DEBUG(stk->status = )BAD_HASH;
 
     return ON_DEBUG(stk->status = )ALL_CORRECT;
 }
