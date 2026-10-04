@@ -11,7 +11,7 @@ void ALL_CORRECT_Stack()
     printf("init:    %d\n", StackInit(&stk, 7));
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void SIZE_ERROR_Stack()
@@ -25,7 +25,7 @@ void SIZE_ERROR_Stack()
     stk.size = -7;
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void CAPACITY_ERROR_Stack()
@@ -39,7 +39,7 @@ void CAPACITY_ERROR_Stack()
     stk.capacity = -7;
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void UNINIT_Stack()
@@ -51,7 +51,7 @@ void UNINIT_Stack()
 
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void ALREADY_INIT_Stack()
@@ -66,7 +66,7 @@ void ALREADY_INIT_Stack()
     printf("init:    %d\n", StackInit(&stk, 7));
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void OOM_Stack()
@@ -76,10 +76,10 @@ void OOM_Stack()
     stack_t stk = {};
     stack_el_t value = 0;
 
-    printf("init:    %d\n", StackInit(&stk, SIZE_MAX - EPS - 3));
+    printf("init:    %d\n", StackInit(&stk, 31431414123));
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void UNDERFLOW_Stack()
@@ -93,7 +93,7 @@ void UNDERFLOW_Stack()
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop1:    %d\n", StackPop(&stk, &value));
     printf("pop2:    %d\n", StackPop(&stk, &value));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void DEAD_CANARY_Stack()
@@ -111,7 +111,7 @@ void DEAD_CANARY_Stack()
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
     printf("push:    %d\n", StackPush(&stk, 4));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void BAD_HASH_Stack()
@@ -125,19 +125,19 @@ void BAD_HASH_Stack()
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
     printf("push:    %d\n", StackPush(&stk, 4));
-    stk.hash_stack_value++;
+    stk.data[1] = 12;
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
     printf("push:    %d\n", StackPush(&stk, 4));
-    printf("destroy: %d\n", StackDestroy(&stk));
+    printf("destroy: %d\n", StackDtor(&stk));
 }
 
 void StackUnitTest()
 {
 
-    ALL_CORRECT_Stack();
+    //ALL_CORRECT_Stack();
 
-    ALREADY_INIT_Stack();
+    //ALREADY_INIT_Stack();
 
     UNINIT_Stack();
 

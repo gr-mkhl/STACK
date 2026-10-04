@@ -32,7 +32,7 @@ typedef int stack_el_t;
 #define EPS (SIZE_MAX / 10)
 
 const unsigned long long LEFT_STACK_CANARY_CORRECT_VALUE = 0xDEADBEEF;
-const unsigned long long RIGHT_STACK_CANARY_CORRECT_VALUE = 0xDEB11DED;
+const unsigned long long RIGHT_STACK_CANARY_CORRECT_VALUE = 0xDEDADED;
 const stack_el_t LEFT_BUFFER_CANARY_CORRECT_VALUE= 0xE1DADEDA;
 const stack_el_t RIGHT_BUFFER_CANARY_CORRECT_VALUE= 0xBEDADEDA;
 
@@ -51,57 +51,68 @@ enum error_id {ALL_CORRECT = 0,
                FATAL_ERROR_NO_STACK = -6,
                DEAD_CANARY = -7,
                STACK_UNDERFLOW = -8,
-               BAD_HASH = -9};
+               BAD_HASH = -9,
+               CANT_INIT = -10};
 
 struct stack_t
 {
     unsigned long long left_stack_canary;
+
     stack_el_t* alloc_ptr;
     stack_el_t* data;
+    ssize_t size;
+    ssize_t capacity;
 
-    size_t size;
-    size_t capacity;
+    uint64_t hash_buffer_value;
+    uint64_t hash_stack_value;
 
 
     ON_DEBUG(const char* file;
              const char* func;
-             int line;
-             enum error_id status;)
-
-    uint64_t hash_stack_value;
-    uint64_t hash_buffer_value;
+             int line;)
+    error_id status;
     unsigned long long right_stack_canary;
 };
 
 #define StackInit(PTR, SIZE) StackInitF(PTR, SIZE ON_DEBUG(, __FILE__, __func__, __LINE__))
 
-enum error_id StackInitF( stack_t* stk, size_t capacity
+ error_id StackInitF( stack_t* stk, ssize_t capacity
                 ON_DEBUG(, const char* file, const char* func, int line));
 
-enum error_id StackPush( stack_t* stk, stack_el_t value );
-enum error_id StackPop( stack_t* stk, stack_el_t* value );
-enum error_id StackDestroy( stack_t* stk );
+ error_id StackPush( stack_t* stk, stack_el_t value );
+ error_id StackPop( stack_t* stk, stack_el_t* value );
+ error_id StackDtor( stack_t* stk );
 
-enum SIGNS {LESS = -1, EQUAL = 0, MORE = 1, UNDEFINED = -2};
+error_id StackInitChecks( stack_t* stk, ssize_t init_capacity );
+void InitCanaries( stack_t* stk );
+void DestroySecurity( stack_t* stk );
+void DestroyStackStruct( stack_t* stk );
+error_id ResizeStack( stack_t* stk, ssize_t new_capacity, size_t el_size );
 
-#define FPRINTFWITHTABS(TABS, STREAM, ...) do                  \
+
+#define fprintf_with_tabs(TABS, STREAM, ...) do                \
                             {                                  \
                                 FprintNTabs(STREAM, TABS);     \
                                 fprintf(STREAM, __VA_ARGS__);  \
                             } while(0);
 
-enum error_id StackPrint( const stack_t* stk, FILE* stream );
+void StackPrint( const stack_t* stk, FILE* stream );
+void PrintStackHead( const stack_t* stk, FILE* stream, size_t* tabs );
+void PrintStackBody( const stack_t* stk, FILE* stream, size_t* tabs );
+void PrintStackTail( const stack_t* stk, FILE* stream, size_t* tabs );
 
-#define StackAssert(STK) StackAssertF( STK ON_DEBUG(, __FILE__, __func__, __LINE__))
-enum error_id StackAssertF( stack_t* stk
+#define StackAssert(STK) StackAssertF( STK ON_DEBUG(, __FILE__, __func__, __LINE__) )
+ error_id StackAssertF( stack_t* stk
               ON_DEBUG(, const char* file, const char* func, int line));
 
-void StackDump( stack_t* stk, enum error_id error
+void StackDump( stack_t* stk,  error_id error
       ON_DEBUG(, const char* file, const char* func, int line ));
 
-enum error_id StackVerifier( stack_t* stk );
-uint64_t Hash_Stack_djb2( stack_t* stk );
-uint64_t Hash_Buffer_djb2( stack_t* stk );
+error_id StackVerifier( stack_t* stk );
+
+uint64_t Hash_djb2( const void* beg, const void* end, const void* except, size_t except_el_size );
+void RecalcHash( stack_t* stk );
+
 int AreNotCanariesAlive( const stack_t* stk );
 
 void fopen_bracket( size_t* tabs, FILE* stream );
@@ -121,7 +132,7 @@ void UNDERFLOW_Stack();
 void DEAD_CANARY_Stack();
 void BAD_HASH_Stack();
 
+
+
+
 #endif
-
-
-

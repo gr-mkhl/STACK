@@ -7,15 +7,17 @@ void CleanBuffer();
             "2 - push to stack\n"                 \
             "3 - pop from stack\n"                \
             "4 - print stack\n"                   \
+            "5 - destroy stack\n"                 \
             "t - test verifications\n"            \
             "q - exit program\n"                  \
             RET_COL
 
 int main()
 {
+    printf("%zd", SSIZE_MAX);
     stack_t stk = {};
     stack_el_t value = 0;
-    size_t stack_init_capacity = 0;
+    ssize_t stack_init_capacity = 0;
 
     int ch = 0;
 
@@ -25,7 +27,7 @@ int main()
         switch (ch)
         {
             case '1':
-                scanf("%zu", &stack_init_capacity);
+                scanf("%zd", &stack_init_capacity);
                 StackInit(&stk, stack_init_capacity);
                 break;
             case '2':
@@ -40,6 +42,9 @@ int main()
                 if (StackAssert(&stk) != FATAL_ERROR_NO_STACK)
                     StackPrint(&stk, stdout);
                 break;
+            case '5':
+                StackDtor(&stk);
+                break;
             case 't':
                 StackUnitTest();
                 break;
@@ -50,7 +55,8 @@ int main()
         printf(MENU);
         CleanBuffer();
     }
-    StackDestroy(&stk);
+
+    StackDtor(&stk);
     return 0;
 }
 
