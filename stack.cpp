@@ -1,7 +1,7 @@
 #include "stack.h"
 
 
-error_id StackInitF( stack_t* stk, ssize_t init_capacity
+error_id StackInitF( stack_t* stk, size_t init_capacity
                 ON_DEBUG(, const char* file, const char* func, int line) )
 {
     error_id error = StackInitChecks(stk, init_capacity);
@@ -56,7 +56,7 @@ error_id StackInitByCopyF( stack_t* src, stack_t* dest
     if (ResizeStack(dest, src->capacity, sizeof(stack_el_t)) != ALL_CORRECT)
         return CANT_INIT;
 
-    for (ssize_t i = 0; i < src->size; i++)
+    for (size_t i = 0; i < src->size; i++)
         dest->data[i] = src->data[i];
 
     dest->status = ALL_CORRECT;
@@ -115,7 +115,7 @@ error_id StackPop( stack_t* stk, stack_el_t* value )
 
     if (4 * stk->size < stk->capacity)
     {
-        ssize_t new_capacity = stk->capacity / 2;
+        size_t new_capacity = stk->capacity / 2;
 
         if (ResizeStack(stk, new_capacity, sizeof(stack_el_t)) == STACK_OOM)
             return STACK_OOM;
@@ -148,7 +148,7 @@ error_id StackDtor( stack_t* stk )
 
 void DestroyStackStruct( stack_t* stk )
 {
-    for (ssize_t i = 0; i < stk->capacity; i++)
+    for (size_t i = 0; i < stk->capacity; i++)
         stk->data[i] = POISON;
 
     free(stk->alloc_ptr);
@@ -177,7 +177,7 @@ void DestroySecurity( stack_t* stk )
     return;
 }
 
-error_id ResizeStack( stack_t* stk, ssize_t new_capacity, size_t el_size )
+error_id ResizeStack( stack_t* stk, size_t new_capacity, size_t el_size )
 {
     #ifdef CANARY_DEFENSE
     stack_el_t* new_alloc_ptr = (stack_el_t*)realloc(stk->alloc_ptr, (new_capacity + 2) * el_size);
@@ -214,7 +214,7 @@ error_id ResizeStack( stack_t* stk, ssize_t new_capacity, size_t el_size )
 
     stk->capacity = new_capacity;
 
-    for (ssize_t i = stk->size; i < stk->capacity; i++)
+    for (size_t i = stk->size; i < stk->capacity; i++)
     {
         stk->data[i] = POISON;
     }
@@ -226,7 +226,7 @@ error_id ResizeStack( stack_t* stk, ssize_t new_capacity, size_t el_size )
     return ALL_CORRECT;
 }
 
-error_id StackInitChecks( stack_t* stk, ssize_t init_capacity )
+error_id StackInitChecks( stack_t* stk, size_t init_capacity )
 {
     if (stk == NULL)
     {
@@ -240,7 +240,7 @@ error_id StackInitChecks( stack_t* stk, ssize_t init_capacity )
         StackAssert(stk);
         return ALREADY_INIT;
     }
-    if (init_capacity < 0 || init_capacity > SSIZE_MAX / 2)
+    if (init_capacity > SIZE_MAX / 2) // defense of underflow capacity
     {
         stk->capacity = init_capacity;
         stk->status = CAPACITY_ERROR;

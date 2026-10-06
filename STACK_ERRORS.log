@@ -1,0 +1,32 @@
+ERROR -3:
+
+-> Stack capacity error
+
+
+__stack[0x000000DF8B1FFBE0]__
+{
+	capacity = -1
+	size = 0
+	data[0x000000DF8B1FFBE8]
+	{
+	}
+}
+
+
+
+ERROR -3:
+
+-> Stack capacity error
+
+
+__stack[0x000000DF8B1FFBE0]__
+{
+	capacity = -1
+	size = 0
+	data[0x000000DF8B1FFBE8]
+	{
+	}
+}
+
+
+

@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdint.h>
 
+//#include <windows.h>
 
 
 #ifdef STACK_DEBUG
@@ -73,8 +74,8 @@ struct stack_t
 
     stack_el_t* alloc_ptr;
     stack_el_t* data;
-    ssize_t size;
-    ssize_t capacity;
+    size_t size;
+    size_t capacity;
 
     HASH_ON(uint64_t hash_buffer_value;)
     HASH_ON(uint64_t hash_stack_value;)
@@ -90,7 +91,7 @@ struct stack_t
     CANARY_ON(unsigned long long right_stack_canary;)
 };
 
-error_id StackInitF( stack_t* stk, ssize_t capacity
+error_id StackInitF( stack_t* stk, size_t capacity
            ON_DEBUG(, const char* file, const char* func, int line) );
 #define StackInit(PTR, SIZE) StackInitF(PTR, SIZE ON_DEBUG(, __FILE__, __func__, __LINE__))
 error_id StackInitByCopyF( stack_t* src, stack_t* dest
@@ -100,8 +101,8 @@ error_id StackPush( stack_t* stk, stack_el_t value );
 error_id StackPop( stack_t* stk, stack_el_t* value );
 error_id StackDtor( stack_t* stk );
 
-error_id StackInitChecks( stack_t* stk, ssize_t init_capacity );
-error_id ResizeStack( stack_t* stk, ssize_t new_capacity, size_t el_size );
+error_id StackInitChecks( stack_t* stk, size_t init_capacity );
+error_id ResizeStack( stack_t* stk, size_t new_capacity, size_t el_size );
 void DestroySecurity( stack_t* stk );
 void DestroyStackStruct( stack_t* stk );
 

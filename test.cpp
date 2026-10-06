@@ -16,7 +16,7 @@ int main()
 {
     stack_t stk = {};
     stack_el_t value = 0;
-    ssize_t stack_init_capacity = 0;
+    size_t stack_init_capacity = 0;
     int ch = 0;
 
     printf(MENU);
@@ -25,7 +25,7 @@ int main()
         switch (ch)
         {
             case '1':
-                scanf("%zd", &stack_init_capacity);
+                scanf("%zu", &stack_init_capacity);
                 StackInit(&stk, stack_init_capacity);
                 break;
             case '2':

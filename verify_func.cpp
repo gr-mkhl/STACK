@@ -11,7 +11,7 @@
 
 void StackPrint( const stack_t* stk, FILE* stream )
 {
-    if (stream == NULL || stk->status == UNINIT_STACK)
+    if (stream == NULL || stk == NULL)
         return;
 
     size_t tabs = 0;
@@ -61,7 +61,7 @@ void PrintStackBody( const stack_t* stk, FILE* stream, size_t* tabs )
                           stk->alloc_ptr[0] == LEFT_BUFFER_CANARY_CORRECT_VALUE ? "true" : "false")
         #endif
 
-        for (ssize_t i = 0; i < stk->capacity; i++)
+        for (size_t i = 0; i < stk->capacity; i++)
         {
             if (i < stk->size)
                 fprintf_with_tabs(*tabs, stream, "(+)")
@@ -232,10 +232,10 @@ void StackDumpF( stack_t* stk,  error_id error
     if (stk->this_ptr != stk)
         return stk->status = INCORRECT_COPY;
 
-    if (stk->capacity < 0)
+    if (stk->capacity > SIZE_MAX / 2)
         return stk->status = CAPACITY_ERROR;
 
-    if (stk->size < 0 || stk->size > stk->capacity)
+    if (stk->size > SIZE_MAX / 2 || stk->size > stk->capacity)
         return stk->status = SIZE_ERROR;
 
     #ifdef CANARY_DEFENSE
