@@ -14,11 +14,9 @@ void CleanBuffer();
 
 int main()
 {
-    printf("%zd", SSIZE_MAX);
     stack_t stk = {};
     stack_el_t value = 0;
     ssize_t stack_init_capacity = 0;
-
     int ch = 0;
 
     printf(MENU);

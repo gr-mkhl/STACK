@@ -1,14 +1,11 @@
 @echo off
 
-
 g++ -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wunreachable-code -Wmissing-declarations -Wmissing-include-dirs -Wswitch-default -Weffc++ -Wmain -Wextra -Wall -g -pipe -fexceptions -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wformat-security -Wformat=2 -Wignored-qualifiers -Wlogical-op -Wno-missing-field-initializers -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wtype-limits -Wwrite-strings -Werror=vla -D_DEBUG -D_EJUDGE_CLIENT_SIDE test.cpp stack.cpp verify_func.cpp unit_test.cpp
 
-
-if exist "%~dp0STACK_ERRORS.txt" (
-del /q "%~dp0STACK_ERRORS.txt"
+if exist "%~dp0STACK_ERRORS.log" (
+del /q "%~dp0STACK_ERRORS.log"
 ) else (
 rem
 )
-
 
 .\a.exe

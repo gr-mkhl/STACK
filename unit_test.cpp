@@ -5,13 +5,37 @@ void ALL_CORRECT_Stack()
 {
     printf(YELLOW "ALL_CORRECT_Stack\n" RET_COL);
 
-    stack_t stk = {};
+    stack_t stk1 = {};
     stack_el_t value = 0;
 
-    printf("init:    %d\n", StackInit(&stk, 7));
-    printf("push:    %d\n", StackPush(&stk, 4));
-    printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("destroy: %d\n", StackDtor(&stk));
+    printf("init:    %d\n", StackInit(&stk1, 7));
+    printf("push:    %d\n", StackPush(&stk1, 4));
+    printf("pop:     %d\n", StackPop(&stk1, &value));
+    printf("destroy: %d\n", StackDtor(&stk1));
+}
+
+void INCORRECT_COPY_Stack()
+{
+    printf(YELLOW "INCORRECT_COPY_Stack\n" RET_COL);
+
+    stack_t stk1 = {}, stk2 = {};
+
+    stack_el_t value = 0;
+
+    printf("init:    %d\n", StackInit(&stk1, 7));
+    printf("push1:    %d\n", StackPush(&stk1, 4));
+    printf("push2:    %d\n", StackPush(&stk1, -12));
+
+    printf("init_correct: %d\n", StackInitByCopy(&stk1, &stk2));
+    printf("push_correct:    %d\n", StackPush(&stk2, 4));
+    printf("pop_correct:    %d\n", StackPop(&stk2, &value));
+
+    stack_t stk3 = stk1;
+    printf("push_incorrect:    %d\n", StackPush(&stk3, 4));
+    printf("pop_incorrect:    %d\n", StackPop(&stk3, &value));
+    printf("destroy1: %d\n", StackDtor(&stk1));
+    printf("destroy2: %d\n", StackDtor(&stk2));
+    printf("destroy3: %d\n", StackDtor(&stk3));
 }
 
 void SIZE_ERROR_Stack()
@@ -135,9 +159,11 @@ void BAD_HASH_Stack()
 void StackUnitTest()
 {
 
-    //ALL_CORRECT_Stack();
+    ALL_CORRECT_Stack();
 
-    //ALREADY_INIT_Stack();
+    ALREADY_INIT_Stack();
+
+    INCORRECT_COPY_Stack();
 
     UNINIT_Stack();
 
