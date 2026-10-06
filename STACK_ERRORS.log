@@ -1,31 +1,1413 @@
-ERROR -3:
+ERROR -5: in file "stack.cpp" function "StackInitChecks()" line 239
 
--> Stack capacity error
+-> Stack is already initialized
 
 
-__stack[0x000000DF8B1FFBE0]__
+__stack[0x00000028A57FF720]__ created at unit_test.cpp:ALREADY_INIT_Stack():99
 {
-	capacity = -1
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 3
 	size = 0
-	data[0x000000DF8B1FFBE8]
+	alloc_ptr[0x00000028A57FF728]
+	data[0x00000028A57FF730]
 	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
 	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x1149E3D222A6D2E8
+	buffer_hash = 0xB920D03D001B2F0D
 }
 
 
 
-ERROR -3:
+ERROR -5: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack is already initialized
+
+
+__stack[0x00000028A57FF720]__ created at unit_test.cpp:ALREADY_INIT_Stack():99
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 3
+	size = 0
+	alloc_ptr[0x00000028A57FF728]
+	data[0x00000028A57FF730]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x1149E3D222A6D2E8
+	buffer_hash = 0xB920D03D001B2F0D
+}
+
+
+
+ERROR -5: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack is already initialized
+
+
+__stack[0x00000028A57FF720]__ created at unit_test.cpp:ALREADY_INIT_Stack():99
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 3
+	size = 0
+	alloc_ptr[0x00000028A57FF728]
+	data[0x00000028A57FF730]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x1149E3D222A6D2E8
+	buffer_hash = 0xB920D03D001B2F0D
+}
+
+
+
+ERROR -5: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Stack is already initialized
+
+
+__stack[0x00000028A57FF720]__ created at unit_test.cpp:ALREADY_INIT_Stack():99
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 3
+	size = 0
+	alloc_ptr[0x00000028A57FF728]
+	data[0x00000028A57FF730]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x1149E3D222A6D2E8
+	buffer_hash = 0xB920D03D001B2F0D
+}
+
+
+
+ERROR -11: in file "stack.cpp" function "StackPush()" line 78
+
+-> This stack copied incorrectly. You should use copy function
+
+
+__stack[0x00000028A57FF6C0]__ created at unit_test.cpp:INCORRECT_COPY_Stack():27
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 2
+	alloc_ptr[0x00000028A57FF6C8]
+	data[0x00000028A57FF6D0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = 4
+		(+)[1] = -13
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xF7DB97AA93C09F17
+	buffer_hash = 0xB32A2FEA3855C1B5
+}
+
+
+
+ERROR -11: in file "stack.cpp" function "StackPop()" line 103
+
+-> This stack copied incorrectly. You should use copy function
+
+
+__stack[0x00000028A57FF6C0]__ created at unit_test.cpp:INCORRECT_COPY_Stack():27
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 2
+	alloc_ptr[0x00000028A57FF6C8]
+	data[0x00000028A57FF6D0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = 4
+		(+)[1] = -13
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xF7DB97AA93C09F17
+	buffer_hash = 0xB32A2FEA3855C1B5
+}
+
+
+
+ERROR -11: in file "stack.cpp" function "StackDtor()" line 136
+
+-> This stack copied incorrectly. You should use copy function
+
+
+__stack[0x00000028A57FF6C0]__ created at unit_test.cpp:INCORRECT_COPY_Stack():27
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 2
+	alloc_ptr[0x00000028A57FF6C8]
+	data[0x00000028A57FF6D0]
+	{
+		canary = 0xFFFFFFBD (correct value = 0xEDADEDA <false>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xFFFFFFBD (correct value = 0xBEDADEDA <false>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xF7DB97AA93C09F17
+	buffer_hash = 0xB32A2FEA3855C1B5
+}
+
+
+
+ERROR -1:
+
+-> Stack is not initialized
+
+
+__stack[0x00000028A57FF790]__ created at (null):(null)():0
+{
+	canary = 0x0 (correct value = 0xDEADBEEF <false>)
+	capacity = 0
+	size = 0
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0x0 (correct value = 0xFEEDDED <false>)
+	stack_hash = 0x0
+	buffer_hash = 0x0
+}
+
+
+
+ERROR -1:
+
+-> Stack is not initialized
+
+
+__stack[0x00000028A57FF790]__ created at (null):(null)():0
+{
+	canary = 0x0 (correct value = 0xDEADBEEF <false>)
+	capacity = 0
+	size = 0
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0x0 (correct value = 0xFEEDDED <false>)
+	stack_hash = 0x0
+	buffer_hash = 0x0
+}
+
+
+
+ERROR -1:
+
+-> Stack is not initialized
+
+
+__stack[0x00000028A57FF790]__ created at (null):(null)():0
+{
+	canary = 0x0 (correct value = 0xDEADBEEF <false>)
+	capacity = 0
+	size = 0
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0x0 (correct value = 0xFEEDDED <false>)
+	stack_hash = 0x0
+	buffer_hash = 0x0
+}
+
+
+
+ERROR -1:
+
+-> Stack is not initialized
+
+
+__stack[0x00000028A57FF790]__ created at (null):(null)():0
+{
+	canary = 0x0 (correct value = 0xDEADBEEF <false>)
+	capacity = 0
+	size = 0
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0x0 (correct value = 0xFEEDDED <false>)
+	stack_hash = 0x0
+	buffer_hash = 0x0
+}
+
+
+
+ERROR -4: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack size error
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:SIZE_ERROR_Stack():52
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = -7
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(+)[2] = -67 (POISON_VALUE)
+		(+)[3] = -67 (POISON_VALUE)
+		(+)[4] = -67 (POISON_VALUE)
+		(+)[5] = -67 (POISON_VALUE)
+		(+)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x2D6349796126F057
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -4: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack size error
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:SIZE_ERROR_Stack():52
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = -7
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(+)[2] = -67 (POISON_VALUE)
+		(+)[3] = -67 (POISON_VALUE)
+		(+)[4] = -67 (POISON_VALUE)
+		(+)[5] = -67 (POISON_VALUE)
+		(+)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x2D6349796126F057
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -4: in file "stack.cpp" function "StackPop()" line 103
+
+-> Stack size error
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:SIZE_ERROR_Stack():52
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = -7
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(+)[2] = -67 (POISON_VALUE)
+		(+)[3] = -67 (POISON_VALUE)
+		(+)[4] = -67 (POISON_VALUE)
+		(+)[5] = -67 (POISON_VALUE)
+		(+)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x2D6349796126F057
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -4: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Stack size error
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:SIZE_ERROR_Stack():52
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = -7
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(+)[2] = -67 (POISON_VALUE)
+		(+)[3] = -67 (POISON_VALUE)
+		(+)[4] = -67 (POISON_VALUE)
+		(+)[5] = -67 (POISON_VALUE)
+		(+)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x2D6349796126F057
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -3: in file "stack.cpp" function "StackPush()" line 78
 
 -> Stack capacity error
 
 
-__stack[0x000000DF8B1FFBE0]__
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:CAPACITY_ERROR_Stack():69
 {
-	capacity = -1
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = -7
 	size = 0
-	data[0x000000DF8B1FFBE8]
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
 	{
 	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x52494606E64F25EE
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -3: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack capacity error
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:CAPACITY_ERROR_Stack():69
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = -7
+	size = 0
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x52494606E64F25EE
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -3: in file "stack.cpp" function "StackPop()" line 103
+
+-> Stack capacity error
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:CAPACITY_ERROR_Stack():69
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = -7
+	size = 0
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x52494606E64F25EE
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -3: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Stack capacity error
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:CAPACITY_ERROR_Stack():69
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = -7
+	size = 0
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x52494606E64F25EE
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -10: in file "stack.cpp" function "ResizeStack()" line 194
+
+-> Stack wasn't init, because there is no memory for this operation
+
+
+ERROR -10: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack wasn't init, because there is no memory for this operation
+
+
+ERROR -10: in file "stack.cpp" function "StackPop()" line 103
+
+-> Stack wasn't init, because there is no memory for this operation
+
+
+ERROR -10: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Stack wasn't init, because there is no memory for this operation
+
+
+ERROR -8: in file "stack.cpp" function "StackPop()" line 111
+
+-> Stack underflow
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:UNDERFLOW_Stack():133
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 8
+	size = 0
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		(-)[7] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x1F8E7C013A447382
+	buffer_hash = 0x88D476BB433C47EF
+}
+
+
+
+ERROR -9: in file "stack.cpp" function "StackPush()" line 78
+
+-> Hash destroyed
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:BAD_HASH_Stack():168
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 6
+	size = 1
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xDC4392A1AB061C3B
+	buffer_hash = 0x4F680F3D61FE1885
+}
+
+
+
+ERROR -9: in file "stack.cpp" function "StackPop()" line 103
+
+-> Hash destroyed
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:BAD_HASH_Stack():168
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 6
+	size = 1
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xDC4392A1AB061C3B
+	buffer_hash = 0x4F680F3D61FE1885
+}
+
+
+
+ERROR -9: in file "stack.cpp" function "StackPush()" line 78
+
+-> Hash destroyed
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:BAD_HASH_Stack():168
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 6
+	size = 1
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xDC4392A1AB061C3B
+	buffer_hash = 0x4F680F3D61FE1885
+}
+
+
+
+ERROR -9: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Hash destroyed
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:BAD_HASH_Stack():168
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 6
+	size = 1
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xDC4392A1AB061C3B
+	buffer_hash = 0x4F680F3D61FE1885
+}
+
+
+
+ERROR -7: in file "stack.cpp" function "StackPush()" line 78
+
+-> Canary is dead. Press F to pay respect
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:DEAD_CANARY_Stack():149
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 1
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+		canary = 0x38BFB (correct value = 0xEDADEDA <false>)
+		(+)[0] = 19
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x9BB75CB6915D4718
+	buffer_hash = 0x81AD20AB76D70C0E
+}
+
+
+
+ERROR -7: in file "stack.cpp" function "StackPop()" line 103
+
+-> Canary is dead. Press F to pay respect
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:DEAD_CANARY_Stack():149
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 1
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+		canary = 0x38BFB (correct value = 0xEDADEDA <false>)
+		(+)[0] = 19
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x9BB75CB6915D4718
+	buffer_hash = 0x81AD20AB76D70C0E
+}
+
+
+
+ERROR -7: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Canary is dead. Press F to pay respect
+
+
+__stack[0x00000028A57FF790]__ created at unit_test.cpp:DEAD_CANARY_Stack():149
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 1
+	alloc_ptr[0x00000028A57FF798]
+	data[0x00000028A57FF7A0]
+	{
+		canary = 0x38BFB (correct value = 0xEDADEDA <false>)
+		(+)[0] = 19
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x9BB75CB6915D4718
+	buffer_hash = 0x81AD20AB76D70C0E
+}
+
+
+
+ERROR -5: in file "stack.cpp" function "StackInitChecks()" line 240
+
+-> Stack is already initialized
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:ALREADY_INIT_Stack():99
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 3
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x705759E3A9573FCC
+	buffer_hash = 0xB920D03D001B2F0D
+}
+
+
+
+ERROR -5: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack is already initialized
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:ALREADY_INIT_Stack():99
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 3
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x705759E3A9573FCC
+	buffer_hash = 0xB920D03D001B2F0D
+}
+
+
+
+ERROR -5: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack is already initialized
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:ALREADY_INIT_Stack():99
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 3
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x705759E3A9573FCC
+	buffer_hash = 0xB920D03D001B2F0D
+}
+
+
+
+ERROR -5: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Stack is already initialized
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:ALREADY_INIT_Stack():99
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 3
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x705759E3A9573FCC
+	buffer_hash = 0xB920D03D001B2F0D
+}
+
+
+
+ERROR -11: in file "stack.cpp" function "StackPush()" line 78
+
+-> This stack copied incorrectly. You should use copy function
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:INCORRECT_COPY_Stack():27
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 2
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = 4
+		(+)[1] = -13
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x28DD943581B2D689
+	buffer_hash = 0xB32A2FEA3855C1B5
+}
+
+
+
+ERROR -11: in file "stack.cpp" function "StackPop()" line 103
+
+-> This stack copied incorrectly. You should use copy function
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:INCORRECT_COPY_Stack():27
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 2
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = 4
+		(+)[1] = -13
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x28DD943581B2D689
+	buffer_hash = 0xB32A2FEA3855C1B5
+}
+
+
+
+ERROR -11: in file "stack.cpp" function "StackDtor()" line 136
+
+-> This stack copied incorrectly. You should use copy function
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:INCORRECT_COPY_Stack():27
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 2
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0x72A4C55D (correct value = 0xEDADEDA <false>)
+		(+)[0] = 5
+		(+)[1] = -1023405940
+		(-)[2] = 1310490414
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xFFFFFFBD (correct value = 0xBEDADEDA <false>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x28DD943581B2D689
+	buffer_hash = 0xB32A2FEA3855C1B5
+}
+
+
+
+ERROR -1:
+
+-> Stack is not initialized
+
+
+__stack[0x0x7ffebc3c70a0]__ created at (null):(null)():0
+{
+	canary = 0x0 (correct value = 0xDEADBEEF <false>)
+	capacity = 0
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0x0 (correct value = 0xFEEDDED <false>)
+	stack_hash = 0x0
+	buffer_hash = 0x0
+}
+
+
+
+ERROR -1:
+
+-> Stack is not initialized
+
+
+__stack[0x0x7ffebc3c70a0]__ created at (null):(null)():0
+{
+	canary = 0x0 (correct value = 0xDEADBEEF <false>)
+	capacity = 0
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0x0 (correct value = 0xFEEDDED <false>)
+	stack_hash = 0x0
+	buffer_hash = 0x0
+}
+
+
+
+ERROR -1:
+
+-> Stack is not initialized
+
+
+__stack[0x0x7ffebc3c70a0]__ created at (null):(null)():0
+{
+	canary = 0x0 (correct value = 0xDEADBEEF <false>)
+	capacity = 0
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0x0 (correct value = 0xFEEDDED <false>)
+	stack_hash = 0x0
+	buffer_hash = 0x0
+}
+
+
+
+ERROR -1:
+
+-> Stack is not initialized
+
+
+__stack[0x0x7ffebc3c70a0]__ created at (null):(null)():0
+{
+	canary = 0x0 (correct value = 0xDEADBEEF <false>)
+	capacity = 0
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0x0 (correct value = 0xFEEDDED <false>)
+	stack_hash = 0x0
+	buffer_hash = 0x0
+}
+
+
+
+ERROR -4: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack size error
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:SIZE_ERROR_Stack():52
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = -7
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(+)[2] = -67 (POISON_VALUE)
+		(+)[3] = -67 (POISON_VALUE)
+		(+)[4] = -67 (POISON_VALUE)
+		(+)[5] = -67 (POISON_VALUE)
+		(+)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x749D6F2540E397F2
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -4: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack size error
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:SIZE_ERROR_Stack():52
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = -7
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(+)[2] = -67 (POISON_VALUE)
+		(+)[3] = -67 (POISON_VALUE)
+		(+)[4] = -67 (POISON_VALUE)
+		(+)[5] = -67 (POISON_VALUE)
+		(+)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x749D6F2540E397F2
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -4: in file "stack.cpp" function "StackPop()" line 103
+
+-> Stack size error
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:SIZE_ERROR_Stack():52
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = -7
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(+)[2] = -67 (POISON_VALUE)
+		(+)[3] = -67 (POISON_VALUE)
+		(+)[4] = -67 (POISON_VALUE)
+		(+)[5] = -67 (POISON_VALUE)
+		(+)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x749D6F2540E397F2
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -4: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Stack size error
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:SIZE_ERROR_Stack():52
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = -7
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(+)[0] = -67 (POISON_VALUE)
+		(+)[1] = -67 (POISON_VALUE)
+		(+)[2] = -67 (POISON_VALUE)
+		(+)[3] = -67 (POISON_VALUE)
+		(+)[4] = -67 (POISON_VALUE)
+		(+)[5] = -67 (POISON_VALUE)
+		(+)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x749D6F2540E397F2
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -3: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack capacity error
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:CAPACITY_ERROR_Stack():69
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = -7
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xF0C4DF1B639B8944
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -3: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack capacity error
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:CAPACITY_ERROR_Stack():69
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = -7
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xF0C4DF1B639B8944
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -3: in file "stack.cpp" function "StackPop()" line 103
+
+-> Stack capacity error
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:CAPACITY_ERROR_Stack():69
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = -7
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xF0C4DF1B639B8944
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -3: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Stack capacity error
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:CAPACITY_ERROR_Stack():69
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = -7
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xF0C4DF1B639B8944
+	buffer_hash = 0xAE9713D317F368F5
+}
+
+
+
+ERROR -10: in file "stack.cpp" function "ResizeStack()" line 194
+
+-> Stack wasn't init, because there is no memory for this operation
+
+
+ERROR -10: in file "stack.cpp" function "StackPush()" line 78
+
+-> Stack wasn't init, because there is no memory for this operation
+
+
+ERROR -10: in file "stack.cpp" function "StackPop()" line 103
+
+-> Stack wasn't init, because there is no memory for this operation
+
+
+ERROR -10: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Stack wasn't init, because there is no memory for this operation
+
+
+ERROR -8: in file "stack.cpp" function "StackPop()" line 111
+
+-> Stack underflow
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:UNDERFLOW_Stack():133
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 8
+	size = 0
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0xEDADEDA (correct value = 0xEDADEDA <true>)
+		(-)[0] = -67 (POISON_VALUE)
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		(-)[7] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0xC434B9A7906B1E1C
+	buffer_hash = 0x88D476BB433C47EF
+}
+
+
+
+ERROR -9: in file "stack.cpp" function "StackPush()" line 78
+
+-> Hash destroyed
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:BAD_HASH_Stack():168
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 6
+	size = 1
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x26F55F71B56535B3
+	buffer_hash = 0x4F680F3D61FE1885
+}
+
+
+
+ERROR -9: in file "stack.cpp" function "StackPop()" line 103
+
+-> Hash destroyed
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:BAD_HASH_Stack():168
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 6
+	size = 1
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x26F55F71B56535B3
+	buffer_hash = 0x4F680F3D61FE1885
+}
+
+
+
+ERROR -9: in file "stack.cpp" function "StackPush()" line 78
+
+-> Hash destroyed
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:BAD_HASH_Stack():168
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 6
+	size = 1
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x26F55F71B56535B3
+	buffer_hash = 0x4F680F3D61FE1885
+}
+
+
+
+ERROR -9: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Hash destroyed
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:BAD_HASH_Stack():168
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 6
+	size = 1
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x26F55F71B56535B3
+	buffer_hash = 0x4F680F3D61FE1885
+}
+
+
+
+ERROR -7: in file "stack.cpp" function "StackPush()" line 78
+
+-> Canary is dead. Press F to pay respect
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:DEAD_CANARY_Stack():149
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 1
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0x38BFB (correct value = 0xEDADEDA <false>)
+		(+)[0] = 19
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x5D3E572DDA7D0CB0
+	buffer_hash = 0x81AD20AB76D70C0E
+}
+
+
+
+ERROR -7: in file "stack.cpp" function "StackPop()" line 103
+
+-> Canary is dead. Press F to pay respect
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:DEAD_CANARY_Stack():149
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 1
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0x38BFB (correct value = 0xEDADEDA <false>)
+		(+)[0] = 19
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x5D3E572DDA7D0CB0
+	buffer_hash = 0x81AD20AB76D70C0E
+}
+
+
+
+ERROR -7: in file "stack.cpp" function "StackDtor()" line 136
+
+-> Canary is dead. Press F to pay respect
+
+
+__stack[0x0x7ffebc3c70a0]__ created at unit_test.cpp:DEAD_CANARY_Stack():149
+{
+	canary = 0xDEADBEEF (correct value = 0xDEADBEEF <true>)
+	capacity = 7
+	size = 1
+	alloc_ptr[0x0x7ffebc3c70a8]
+	data[0x0x7ffebc3c70b0]
+	{
+		canary = 0x38BFB (correct value = 0xEDADEDA <false>)
+		(+)[0] = 19
+		(-)[1] = -67 (POISON_VALUE)
+		(-)[2] = -67 (POISON_VALUE)
+		(-)[3] = -67 (POISON_VALUE)
+		(-)[4] = -67 (POISON_VALUE)
+		(-)[5] = -67 (POISON_VALUE)
+		(-)[6] = -67 (POISON_VALUE)
+		canary = 0xBEDADEDA (correct value = 0xBEDADEDA <true>)
+	}
+	canary = 0xFEEDDED (correct value = 0xFEEDDED <true>)
+	stack_hash = 0x5D3E572DDA7D0CB0
+	buffer_hash = 0x81AD20AB76D70C0E
 }
 
 

@@ -1,23 +1,21 @@
 #ifndef _STACK_H_
 #define _STACK_H_
 
-//#define STACK_DEBUG
+#define STACK_DEBUG
+//#define CANARY_DEFENSE
+//#define HASH_DEFENSE
 
-#include <stdio.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-
-//#include <windows.h>
-
+#ifdef __win32__
+#include <windows.h>
+#define WINDOWS_SYS
+#endif
 
 #ifdef STACK_DEBUG
-#define ON_DEBUG(...) __VA_ARGS__
-#define CANARY_DEFENSE
-#define HASH_DEFENSE
+    #define CANARY_DEFENSE
+    #define HASH_DEFENSE
+    #define ON_DEBUG(...) __VA_ARGS__
 #else
-#define ON_DEBUG(...)
+    #define ON_DEBUG(...)
 #endif
 
 #ifdef CANARY_DEFENSE
@@ -32,6 +30,11 @@
 #define HASH_ON(...)
 #endif
 
+#include <stdio.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
 
 
 
@@ -40,6 +43,7 @@ typedef int stack_el_t;
 #define POISON -67
 
 
+#define incorrect false
 #define ERROR_FILE_NAME "STACK_ERRORS.log"
 
 #define RED         "\033[31m"
@@ -47,12 +51,7 @@ typedef int stack_el_t;
 #define BLUE        "\033[34m"
 #define RET_COL  "\033[0m"
 
-#ifdef CANARY_DEFENSE
-const unsigned long long LEFT_STACK_CANARY_CORRECT_VALUE = 0xDEADBEEF;
-const unsigned long long RIGHT_STACK_CANARY_CORRECT_VALUE = 0xFEEDDED;
-const stack_el_t LEFT_BUFFER_CANARY_CORRECT_VALUE= 0xEDADEDA;
-const stack_el_t RIGHT_BUFFER_CANARY_CORRECT_VALUE= 0xBEDADEDA;
-#endif
+
 
 
 enum error_id {ALL_CORRECT = 0,
@@ -66,7 +65,8 @@ enum error_id {ALL_CORRECT = 0,
                STACK_UNDERFLOW = -8,
                HASH_ON(BAD_HASH = -9,)
                CANT_INIT = -10,
-               INCORRECT_COPY = -11};
+               INCORRECT_COPY = -11,
+               INVALID_POINTER = -12};
 
 struct stack_t
 {
@@ -91,6 +91,8 @@ struct stack_t
     CANARY_ON(unsigned long long right_stack_canary;)
 };
 
+#include "verify.h"
+
 error_id StackInitF( stack_t* stk, size_t capacity
            ON_DEBUG(, const char* file, const char* func, int line) );
 #define StackInit(PTR, SIZE) StackInitF(PTR, SIZE ON_DEBUG(, __FILE__, __func__, __LINE__))
@@ -108,17 +110,6 @@ void DestroyStackStruct( stack_t* stk );
 
 
 
-#ifdef CANARY_DEFENSE
-void InitCanaries( stack_t* stk );
-bool AreCanariesDead( const stack_t* stk );
-#endif
-
-#ifdef HASH_DEFENSE
-uint64_t Hash_djb2( const void* beg, const void* end, const void* except, size_t except_el_size );
-void RecalcHash( stack_t* stk );
-#endif
-
-
 #define fprintf_with_tabs(TABS, STREAM, ...) do                \
                             {                                  \
                                 FprintNTabs(STREAM, TABS);     \
@@ -131,35 +122,9 @@ void PrintStackTail( const stack_t* stk, FILE* stream, size_t* tabs );
 
 
 
-
-
-error_id StackVerifier( stack_t* stk );
-#define StackAssert(STK) StackAssertF( STK ON_DEBUG(, __FILE__, __func__, __LINE__) )
-error_id StackAssertF( stack_t* stk
-             ON_DEBUG(, const char* file, const char* func, int line));
-#define StackDump(STK, ERR) StackDumpF( STK, ERR ON_DEBUG(, __FILE__, __func__, __LINE__) )
-void StackDumpF( stack_t* stk,  error_id error
-      ON_DEBUG(, const char* file, const char* func, int line ));
-
-
 void fopen_bracket( size_t* tabs, FILE* stream );
 void fclose_bracket( size_t* tabs, FILE* stream );
 void FprintNTabs( FILE* stream, size_t tabs );
-
-
-void StackUnitTest();
-
-void ALL_CORRECT_Stack();
-void ALREADY_INIT_Stack();
-void UNINIT_Stack();
-void INCORRECT_COPY_Stack();
-void CAPACITY_ERROR_Stack();
-void SIZE_ERROR_Stack();
-void OOM_Stack();
-void UNDERFLOW_Stack();
-void DEAD_CANARY_Stack();
-void BAD_HASH_Stack();
-
 
 
 

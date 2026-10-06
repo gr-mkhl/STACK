@@ -1,6 +1,5 @@
 #include "stack.h"
 
-
 error_id StackInitF( stack_t* stk, size_t init_capacity
                 ON_DEBUG(, const char* file, const char* func, int line) )
 {
@@ -20,7 +19,6 @@ error_id StackInitF( stack_t* stk, size_t init_capacity
         return CANT_INIT;
 
     stk->status = ALL_CORRECT;
-
     stk->this_ptr = stk;
 
     #ifdef CANARY_DEFENSE
@@ -83,7 +81,8 @@ error_id StackPush( stack_t* stk, stack_el_t value )
 
     if (stk->size == stk->capacity)
     {
-        size_t new_capacity = (stk->capacity != 0 ? stk->capacity * 2 : 16); //for stk->capacity == 0, 16 is just a magic number
+        size_t new_capacity = (stk->capacity != 0 ? stk->capacity * 2 : 16);
+        //for stk->capacity == 0, 16 is just a magic number
 
         if (ResizeStack(stk, new_capacity, sizeof(stack_el_t)) == STACK_OOM)
             return STACK_OOM;
@@ -231,6 +230,7 @@ error_id StackInitChecks( stack_t* stk, size_t init_capacity )
     if (stk == NULL)
     {
         StackAssert(stk);
+        
         return FATAL_ERROR_NO_STACK;
     }
 
@@ -238,6 +238,7 @@ error_id StackInitChecks( stack_t* stk, size_t init_capacity )
     {
         stk->status = ALREADY_INIT;
         StackAssert(stk);
+
         return ALREADY_INIT;
     }
     if (init_capacity > SIZE_MAX / 2) // defense of underflow capacity
@@ -245,17 +246,12 @@ error_id StackInitChecks( stack_t* stk, size_t init_capacity )
         stk->capacity = init_capacity;
         stk->status = CAPACITY_ERROR;
         StackAssert(stk);
+
         return CAPACITY_ERROR;
     }
+
     return ALL_CORRECT;
 }
 
-#ifdef CANARY_DEFENSE
-void InitCanaries( stack_t* stk )
-{
-    stk->alloc_ptr[0]                 =  LEFT_BUFFER_CANARY_CORRECT_VALUE;
-    stk->alloc_ptr[stk->capacity + 1] = RIGHT_BUFFER_CANARY_CORRECT_VALUE;
-    stk->left_stack_canary  =  LEFT_STACK_CANARY_CORRECT_VALUE;
-    stk->right_stack_canary = RIGHT_STACK_CANARY_CORRECT_VALUE;
-}
-#endif
+
+

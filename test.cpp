@@ -1,4 +1,6 @@
 #include "stack.h"
+#include "unit_test.h"
+
 
 void CleanBuffer();
 #define MENU BLUE                                 \

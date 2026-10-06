@@ -1,5 +1,4 @@
-#include "stack.h"
-
+#include "unit_test.h"
 
 void ALL_CORRECT_Stack()
 {
@@ -8,31 +7,36 @@ void ALL_CORRECT_Stack()
     stack_t stk1 = {};
     stack_el_t value = 0;
 
-    printf("init:    %d\n", StackInit(&stk1, 7));
-    printf("push:    %d\n", StackPush(&stk1, 4));
-    printf("pop:     %d\n", StackPop(&stk1, &value));
-    printf("destroy: %d\n", StackDtor(&stk1));
+    printf("init stack capacity: %d, error:  %d\n", 7, StackInit(&stk1, 7));
+    printf("push1: %d, error: %d\n", 4, StackPush(&stk1, 4));
+    printf("push2: %d, error: %d\n", -13, StackPush(&stk1, -13));
+    printf("pop1 error: %d\n", StackPop(&stk1, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
+    printf("pop2 error: %d\n", StackPop(&stk1, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
+    printf("destroy error: %d\n", StackDtor(&stk1));
 }
 
 void INCORRECT_COPY_Stack()
 {
     printf(YELLOW "INCORRECT_COPY_Stack\n" RET_COL);
-
     stack_t stk1 = {}, stk2 = {};
 
     stack_el_t value = 0;
 
-    printf("init:    %d\n", StackInit(&stk1, 7));
-    printf("push1:    %d\n", StackPush(&stk1, 4));
-    printf("push2:    %d\n", StackPush(&stk1, -12));
+    printf("init stack capacity: %d, error:  %d\n", 7, StackInit(&stk1, 7));
+    printf("push1: %d, error: %d\n", 4, StackPush(&stk1, 4));
+    printf("push2: %d, error: %d\n", -13, StackPush(&stk1, -13));
 
     printf("init_correct: %d\n", StackInitByCopy(&stk1, &stk2));
-    printf("push_correct:    %d\n", StackPush(&stk2, 4));
+    printf("push_correct: %d, error: %d\n", 16, StackPush(&stk2, 16));
     printf("pop_correct:    %d\n", StackPop(&stk2, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
 
     stack_t stk3 = stk1;
-    printf("push_incorrect:    %d\n", StackPush(&stk3, 4));
+    printf("push_incorrect: %d, error: %d\n", 141, StackPush(&stk3, 141));
     printf("pop_incorrect:    %d\n", StackPop(&stk3, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("destroy1: %d\n", StackDtor(&stk1));
     printf("destroy2: %d\n", StackDtor(&stk2));
     printf("destroy3: %d\n", StackDtor(&stk3));
@@ -45,10 +49,13 @@ void SIZE_ERROR_Stack()
     stack_t stk = {};
     stack_el_t value = 0;
 
-    printf("init:    %d\n", StackInit(&stk, 7));
+    printf("init stack capacity: %d, error:  %d\n", 7, StackInit(&stk, 7));
     stk.size = -7;
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("size changed to %zu\n", stk.size);
+    printf("push1: %d, error: %d\n", 19, StackPush(&stk, 19));
+    printf("push2: %d, error: %d\n", -84, StackPush(&stk, -84));
     printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("destroy: %d\n", StackDtor(&stk));
 }
 
@@ -61,8 +68,11 @@ void CAPACITY_ERROR_Stack()
 
     printf("init:    %d\n", StackInit(&stk, 7));
     stk.capacity = -7;
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("capacity changed to %zu\n", stk.capacity);
+    printf("push1: %d, error: %d\n", 357, StackPush(&stk, 357));
+    printf("push2: %d, error: %d\n", -133, StackPush(&stk, -133));
     printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("destroy: %d\n", StackDtor(&stk));
 }
 
@@ -73,8 +83,11 @@ void UNINIT_Stack()
     stack_t stk = {};
     stack_el_t value = 0;
 
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("stack wasn't inited\n");
+    printf("push1: %d, error: %d\n", 4, StackPush(&stk, 4));
+    printf("push2: %d, error: %d\n", -13, StackPush(&stk, -13));
     printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("destroy: %d\n", StackDtor(&stk));
 }
 
@@ -84,12 +97,15 @@ void ALREADY_INIT_Stack()
 
     stack_t stk1 = {};
     StackInit(&stk1, 3);
+    printf("stack inited with capacity %zu\n", stk1.capacity);
     stack_t stk = stk1;
     stack_el_t value = 0;
 
-    printf("init:    %d\n", StackInit(&stk, 7));
-    printf("push:    %d\n", StackPush(&stk, 4));
-    printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("reinit:    %d\n", StackInit(&stk, 7));
+    printf("push1: %d, error: %d\n", 4, StackPush(&stk, 4));
+    printf("push2: %d, error: %d\n", -13, StackPush(&stk, -13));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("destroy: %d\n", StackDtor(&stk));
 }
 
@@ -101,8 +117,9 @@ void OOM_Stack()
     stack_el_t value = 0;
 
     printf("init:    %d\n", StackInit(&stk, 31431414123));
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("push1: %d, error: %d\n", 4, StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("destroy: %d\n", StackDtor(&stk));
 }
 
@@ -114,9 +131,11 @@ void UNDERFLOW_Stack()
     stack_el_t value = 0;
 
     printf("init:    %d\n", StackInit(&stk, 0));
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("push1: %d, error: %d\n", 134, StackPush(&stk, 134));
     printf("pop1:    %d\n", StackPop(&stk, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("pop2:    %d\n", StackPop(&stk, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("destroy: %d\n", StackDtor(&stk));
 }
 
@@ -127,14 +146,15 @@ void DEAD_CANARY_Stack()
     stack_t stk = {};
     stack_el_t value = 0;
 
-    printf("init:    %d\n", StackInit(&stk, 7));
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("inited with capacity %d:  error:  %d\n", 7, StackInit(&stk, 7));
+    printf("push1: %d, error: %d\n", 19, StackPush(&stk, 19));
+    printf("push2: %d, error: %d\n", -84, StackPush(&stk, -84));
     printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     stk.alloc_ptr[0] = 232443;
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("push1: %d, error: %d\n", 173, StackPush(&stk, 173));
     printf("pop:     %d\n", StackPop(&stk, &value));
-    printf("push:    %d\n", StackPush(&stk, 4));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("destroy: %d\n", StackDtor(&stk));
 }
 
@@ -145,13 +165,16 @@ void BAD_HASH_Stack()
     stack_t stk = {};
     stack_el_t value = 0;
 
-    printf("init:    %d\n", StackInit(&stk, 7));
+    printf("inited with capacity: %d error:  %d\n", 13, StackInit(&stk, 13));
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("push:    %d\n", StackPush(&stk, 4));
     stk.data[1] = 12;
+    printf("data broke\n");
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("pop:     %d\n", StackPop(&stk, &value));
+    printf("popped value:" OUTPUT_SPECIFIER "\n", value);
     printf("push:    %d\n", StackPush(&stk, 4));
     printf("destroy: %d\n", StackDtor(&stk));
 }

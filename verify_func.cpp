@@ -1,13 +1,5 @@
 #include "stack.h"
-
-
-//   ATTENTION!!!
-//
-//   StackPrint doesn't check stack
-//   you need to check it before calling it
-//
-//   ATTENTION!!!
-
+#include "verify.h"
 
 void StackPrint( const stack_t* stk, FILE* stream )
 {
@@ -19,7 +11,6 @@ void StackPrint( const stack_t* stk, FILE* stream )
     PrintStackHead(stk, stream, &tabs);
     PrintStackBody(stk, stream, &tabs);
     PrintStackTail(stk, stream, &tabs);
-
 
     return;
 }
@@ -87,8 +78,8 @@ void PrintStackTail( const stack_t* stk, FILE* stream, size_t* tabs )
     fprintf_with_tabs(*tabs, stream, "canary = 0x%llX (correct value = 0x%llX <%s>)\n",
                       stk->right_stack_canary, RIGHT_STACK_CANARY_CORRECT_VALUE,
                       stk->right_stack_canary == RIGHT_STACK_CANARY_CORRECT_VALUE ? "true" : "false")
-    fprintf_with_tabs(*tabs, stream, "stack_hash = %llu\n", stk->hash_stack_value)
-    fprintf_with_tabs(*tabs, stream, "buffer_hash = %llu\n", stk->hash_buffer_value)
+    fprintf_with_tabs(*tabs, stream, "stack_hash = 0x%llX\n", stk->hash_stack_value)
+    fprintf_with_tabs(*tabs, stream, "buffer_hash = 0x%llX\n", stk->hash_buffer_value)
     #endif
 
     fclose_bracket(tabs, stream);
@@ -121,7 +112,7 @@ void RecalcHash( stack_t* stk )
 #endif
 
 error_id StackAssertF( stack_t* stk
-            ON_DEBUG(, const char* file, const char* func, int line))
+             ON_DEBUG(, const char* file, const char* func, int line))
 {
     if (stk == NULL)
     {
@@ -148,9 +139,9 @@ void StackDumpF( stack_t* stk,  error_id error
 {
     FILE* error_file = fopen(ERROR_FILE_NAME, "a");
     if (error_file == NULL)
-        return;
+        error_file = stderr;
 
-    #ifdef STACK_DEBUG                      //TODO !
+    #ifdef STACK_DEBUG
     if (error != UNINIT_STACK)
         fprintf(error_file, "ERROR %d: in file \"%s\" function \"%s()\" line %d\n\n",
                 error, file, func, line);
@@ -188,7 +179,7 @@ void StackDumpF( stack_t* stk,  error_id error
             break;
         case UNINIT_STACK:
             fprintf(error_file, "-> Stack is not initialized\n\n\n");
-            //NOTE we can't print uninit stack
+            StackPrint(stk, error_file);
             break;
         case INCORRECT_COPY:
             fprintf(error_file, "-> This stack copied incorrectly. You should use copy function\n\n\n");
@@ -212,11 +203,17 @@ void StackDumpF( stack_t* stk,  error_id error
         case CANT_INIT:
             fprintf(error_file, "-> Stack wasn't init, because there is no memory for this operation\n\n\n");
             break;
+        #ifdef WINDOWS_SYS
+        case INVALID_POINTER:
+            fprintf(error_file, "-> Stack is broken. One of pointers cant be used\n\n\n");
+            break;
+        #endif
         default:
             break;
     }
 
-    fclose(error_file);
+    if (error_file != stderr)
+        fclose(error_file);
 
     return;
 }
@@ -238,18 +235,63 @@ void StackDumpF( stack_t* stk,  error_id error
     if (stk->size > SIZE_MAX / 2 || stk->size > stk->capacity)
         return stk->status = SIZE_ERROR;
 
+    #ifdef WINDOWS_SYS
+    if (CheckAllStackPointers(stk) == false)
+        return stk->status = INVALID_POINTER;
+    #endif
+
     #ifdef CANARY_DEFENSE
     if (AreCanariesDead(stk))
         return stk->status = DEAD_CANARY;
     #endif
 
     #ifdef HASH_DEFENSE
-    if (IsHashBad == true)
+    if (IsHashBad(stk) == true)
         return stk->status = BAD_HASH;
     #endif
 
     return ALL_CORRECT;
 }
+
+#ifdef WINDOWS_SYS
+bool CheckPointer( const void* ptr )
+{
+    struct _MEMORY_BASIC_INFORMATION info = {};
+
+    if (VirtualQuery(ptr, &info, sizeof(info)) == 0)
+        return false;
+    if (info.State != MEM_COMMIT)
+        return false;
+    if (info.Protect & PAGE_NOACCESS)
+        return false;
+    return true;
+}
+
+bool CheckAllStackPointers( stack_t* stk )
+{
+    if (CheckPointer(stk) == incorrect)
+        return false;
+    if (CheckPointer(stk->this_ptr) == incorrect)
+        return false;
+
+    if (CheckPointer(stk->alloc_ptr) == incorrect)
+        return false;
+
+    if (CheckPointer(stk->data) == incorrect ||
+        CheckPointer(&stk->data[stk->capacity]) == incorrect)
+        return false;
+
+    #ifdef STACK_DEBUG
+    if (CheckPointer(stk->file) == incorrect)
+        return false;
+
+    if (CheckPointer(stk->func) == incorrect)
+        return false;
+    #endif
+
+    return true;
+}
+#endif
 
 #ifdef HASH_DEFENSE
 bool IsHashBad( const stack_t* stk )
@@ -262,6 +304,15 @@ bool IsHashBad( const stack_t* stk )
 #endif
 
 #ifdef CANARY_DEFENSE
+
+void InitCanaries( stack_t* stk )
+{
+    stk->alloc_ptr[0]                 =  LEFT_BUFFER_CANARY_CORRECT_VALUE;
+    stk->alloc_ptr[stk->capacity + 1] = RIGHT_BUFFER_CANARY_CORRECT_VALUE;
+    stk->left_stack_canary  =  LEFT_STACK_CANARY_CORRECT_VALUE;
+    stk->right_stack_canary = RIGHT_STACK_CANARY_CORRECT_VALUE;
+}
+
 bool AreCanariesDead( const stack_t* stk )
 {
     if (stk->left_stack_canary            != LEFT_STACK_CANARY_CORRECT_VALUE  ||
