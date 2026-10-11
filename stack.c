@@ -186,6 +186,8 @@ void DestroySecurity( stack_t* stk )
     stk->hash_stack_value = 0;
     #endif
 
+    stk = stk;
+
     return;
 }
 

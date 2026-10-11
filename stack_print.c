@@ -85,6 +85,8 @@ void PrintStackTail( const stack_t* stk, FILE* stream, size_t* tabs )
     fprintf_with_tabs(*tabs, stream, "buffer_hash = 0x%llX\n", stk->hash_buffer_value)
     #endif
 
+    stk = stk;
+
     fclose_bracket(tabs, stream);
     fprintf(stream, "\n\n\n");
 }

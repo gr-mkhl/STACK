@@ -7,7 +7,7 @@ g++ -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal ^
 -Wignored-qualifiers -Wlogical-op -Wno-missing-field-initializers -Wnon-virtual-dtor ^
 -Woverloaded-virtual -Wpointer-arith -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing ^
 -Wstrict-null-sentinel -Wtype-limits -Wwrite-strings -Werror=vla -D_DEBUG -D_EJUDGE_CLIENT_SIDE ^
-test.cpp stack.cpp verify.cpp stack_print.cpp
+test.c stack.c verify.c stack_print.c
 
 if exist "%~dp0STACK_ERRORS.log" (
 del /q "%~dp0STACK_ERRORS.log"
