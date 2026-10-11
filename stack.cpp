@@ -3,9 +3,11 @@
 error_id StackInitF( stack_t* stk, size_t init_capacity
                 ON_DEBUG(, const char* file, const char* func, int line) )
 {
+    #ifdef _VERIFY_H_
     error_id error = StackInitChecks(stk, init_capacity);
     if (error != ALL_CORRECT)
         return error;
+    #endif
 
     #ifdef STACK_DEBUG
         stk->file = file;
@@ -35,13 +37,16 @@ error_id StackInitF( stack_t* stk, size_t init_capacity
 error_id StackInitByCopyF( stack_t* src, stack_t* dest
                  ON_DEBUG(, const char* file, const char* func, int line) )
 {
+    #ifdef _VERIFY_H_
     error_id error_src = StackAssert(src);
     if (error_src != ALL_CORRECT)
         return error_src;
 
+
     error_id error_dest = StackInitChecks(dest, src->capacity);
     if (error_dest != ALL_CORRECT)
         return error_dest;
+    #endif
 
     #ifdef STACK_DEBUG
         dest->file = file;
@@ -75,9 +80,11 @@ error_id StackInitByCopyF( stack_t* src, stack_t* dest
 
 error_id StackPush( stack_t* stk, stack_el_t value )
 {
+    #ifdef _VERIFY_H_
     error_id error = StackAssert(stk);
     if (error != ALL_CORRECT)
         return error;
+    #endif
 
     if (stk->size == stk->capacity)
     {
@@ -100,15 +107,19 @@ error_id StackPush( stack_t* stk, stack_el_t value )
 
 error_id StackPop( stack_t* stk, stack_el_t* value )
 {
+    #ifdef _VERIFY_H_
     error_id error = StackAssert(stk);
     if (error != ALL_CORRECT)
         return error;
+    #endif
 
     if (stk->size == 0)
     {
         *value = POISON;
         stk->status = STACK_UNDERFLOW;
+        #ifdef _VERIFY_H_
         StackAssert(stk);
+        #endif
         return STACK_UNDERFLOW;
     }
 
@@ -133,9 +144,11 @@ error_id StackPop( stack_t* stk, stack_el_t* value )
 
 error_id StackDtor( stack_t* stk )
 {
+    #ifdef _VERIFY_H_
     error_id error = StackAssert(stk);
     if (error != ALL_CORRECT)
         return error;
+    #endif
 
     DestroySecurity(stk);
 
@@ -191,13 +204,17 @@ error_id ResizeStack( stack_t* stk, size_t new_capacity, size_t el_size )
         if (stk->capacity == 0)
         {
             stk->status = CANT_INIT;
+            #ifdef _VERIFY_H_
             StackAssert(stk);
+            #endif
             return CANT_INIT;
         }
         else
         {
             stk->status = STACK_OOM;
+            #ifdef _VERIFY_H_
             StackAssert(stk);
+            #endif
             return STACK_OOM;
         }
     }
@@ -229,15 +246,20 @@ error_id StackInitChecks( stack_t* stk, size_t init_capacity )
 {
     if (stk == NULL)
     {
+        #ifdef _VERIFY_H_
         StackAssert(stk);
-        
+        #endif
+
         return FATAL_ERROR_NO_STACK;
     }
 
     if (stk->alloc_ptr != NULL || stk->capacity != 0 || stk->size != 0)
     {
         stk->status = ALREADY_INIT;
+
+        #ifdef _VERIFY_H_
         StackAssert(stk);
+        #endif
 
         return ALREADY_INIT;
     }
@@ -245,13 +267,14 @@ error_id StackInitChecks( stack_t* stk, size_t init_capacity )
     {
         stk->capacity = init_capacity;
         stk->status = CAPACITY_ERROR;
+
+        #ifdef _VERIFY_H_
         StackAssert(stk);
+        #endif
 
         return CAPACITY_ERROR;
     }
 
     return ALL_CORRECT;
 }
-
-
 

@@ -1,6 +1,14 @@
 #ifndef _VERIFY_H_
 #define _VERIFY_H_
 
+#include "stack_struct.h"
+#include "stack_print.h"
+#ifdef WINDOWS_SYS
+#include <windows.h>
+#endif
+
+#define ERROR_FILE_NAME "STACK_ERRORS.log"
+
 
 #ifdef CANARY_DEFENSE
 const unsigned long long LEFT_STACK_CANARY_CORRECT_VALUE = 0xDEADBEEF;
@@ -33,4 +41,6 @@ error_id StackAssertF( stack_t* stk
 #define StackDump(STK, ERR) StackDumpF( STK, ERR ON_DEBUG(, file, func, line) )
 void StackDumpF( stack_t* stk,  error_id error
       ON_DEBUG(, const char* file, const char* func, int line ));
+
+
 #endif

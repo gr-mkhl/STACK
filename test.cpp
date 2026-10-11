@@ -1,8 +1,11 @@
 #include "stack.h"
+#include "stack_print.h"
+#include "verify.h"
 #include "unit_test.h"
 
 
 void CleanBuffer();
+
 #define MENU BLUE                                 \
             "menu:\n"                             \
             "1 - init stack sizeof\n"             \
@@ -39,15 +42,16 @@ int main()
                 printf(OUTPUT_SPECIFIER "\n", value);
                 break;
             case '4':
-                if (StackAssert(&stk) != FATAL_ERROR_NO_STACK)
                     StackPrint(&stk, stdout);
                 break;
             case '5':
                 StackDtor(&stk);
                 break;
+            /*
             case 't':
                 StackUnitTest();
                 break;
+            */
             default:
                 printf(RED "Invalid input\n" RET_COL);
                 break;
