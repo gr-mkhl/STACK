@@ -6,7 +6,7 @@
 
 void CleanBuffer();
 
-#define MENU BLUE                                 \
+#define MENU                                      \
             "menu:\n"                             \
             "1 - init stack sizeof\n"             \
             "2 - push to stack\n"                 \
@@ -15,7 +15,6 @@ void CleanBuffer();
             "5 - destroy stack\n"                 \
             "t - test verifications\n"            \
             "q - exit program\n"                  \
-            RET_COL
 
 int main()
 {
@@ -53,7 +52,7 @@ int main()
                 break;
             */
             default:
-                printf(RED "Invalid input\n" RET_COL);
+                printf("Invalid input\n");
                 break;
         }
         printf(MENU);

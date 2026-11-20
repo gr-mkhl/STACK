@@ -34,7 +34,7 @@ error_id StackInitF( stack_t* stk, size_t init_capacity
     return ALL_CORRECT;
 }
 
-error_id StackInitByCopyF( stack_t* src, stack_t* dest
+error_id StackInitByCopyF( stack_t* dest, stack_t* src,
                  ON_DEBUG(, const char* file, const char* func, int line) )
 {
     #ifdef _VERIFY_H_
@@ -61,6 +61,8 @@ error_id StackInitByCopyF( stack_t* src, stack_t* dest
 
     for (size_t i = 0; i < src->size; i++)
         dest->data[i] = src->data[i];
+
+    dest->size = src->size;
 
     dest->status = ALL_CORRECT;
 
